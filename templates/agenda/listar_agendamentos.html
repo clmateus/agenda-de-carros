@@ -1,0 +1,25 @@
+{% extends 'agenda/base.html' %}
+
+{% block content %}
+    <h2>Agendamentos</h2>
+    {% if agendamentos %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>Solicitante</th>
+                <th>Carro</th>
+                <th>Data</th>
+                <th>Período</th>
+            </tr>
+            {% for agendamento in agendamentos %}
+            <tr>
+                <td>{{ agendamento.solicitante }}</td>
+                <td>{{ agendamento.carro }}</td>
+                <td>{{ agendamento.data }}</td>
+                <td>{{ agendamento.get_periodo_display }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nenhum agendamento encontrado.</p>
+    {% endif %}
+{% endblock %}

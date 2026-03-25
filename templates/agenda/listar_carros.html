@@ -1,0 +1,23 @@
+{% extends 'agenda/base.html' %}
+
+{% block content %}
+    <h2>Carros cadastrados</h2>
+    {% if carros %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Placa</th>
+            </tr>
+            {% for carro in carros %}
+            <tr>
+                <td>{{ carro.marca }}</td>
+                <td>{{ carro.modelo }}</td>
+                <td>{{ carro.placa }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nenhum carro cadastrado ainda.</p>
+    {% endif %}
+{% endblock %}

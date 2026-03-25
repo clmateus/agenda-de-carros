@@ -1,0 +1,13 @@
+{% extends 'agenda/base.html' %}
+
+{% block content %}
+    <h2>Agendamento de Carro</h2>
+    <!-- /> -->
+    <form method="post">
+        <!-- crsf_token = Token para garantir que o formulário foi enviado pelo próprio site e não por algo externo -->
+        {% csrf_token %}
+        <!-- Cada campo em um parágrafo -->
+        {{ form.as_p }}
+        <button type="submit">Confirmar agendamento</button>
+    </form>
+{% endblock %}
