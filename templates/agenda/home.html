@@ -1,13 +1,12 @@
 {% extends 'agenda/base.html' %}
 
 {% block content %}
-    <h2>Agendamento de Carro</h2>
-    <!-- /> -->
-    <form method="post">
+    <h2 class='mt-3'>Solicitar agendamento de veículo</h2>
+    <form method="post" class="form-control border-none">
         <!-- crsf_token = Token para garantir que o formulário foi enviado pelo próprio site e não por algo externo -->
         {% csrf_token %}
         <!-- Cada campo em um parágrafo -->
         {{ form.as_p }}
-        <button type="submit">Confirmar agendamento</button>
+        <button type="submit" class="btn btn-primary">Solicitar agendamento</button>
     </form>
 {% endblock %}

@@ -1,4 +1,4 @@
-* {
+/* * {
     margin: 0; 
     padding: 0;
     box-sizing: border-box;
@@ -6,7 +6,6 @@
 
 body { 
     font-family: "Roboto", sans-serif;
-    background-image: url('../assets/toretto.jpg')
 }
 
 nav { 
@@ -30,3 +29,60 @@ nav a:hover {
     margin: 40px auto; 
     padding: 0 20px; 
 }
+
+.scheduling_table tr td {
+    border-bottom: 1px solid black;
+    padding: 8px;
+}
+
+.scheduling_table .title th {
+    padding-bottom: 8px;
+}
+
+h2 {
+    padding-bottom: 18px;
+}
+
+.scheduling-form label{
+    font-weight: bold;
+}
+
+.scheduling-form input {
+    padding: 8px;
+    display: block;
+    border-style: none;
+    border-bottom: 1px solid black;
+}
+
+.scheduling-form input:focus {
+    outline: none;
+}
+
+.scheduling-form p {
+    margin-top: 24px;
+}
+
+.scheduling-form input[type='date'] {
+    color: red;
+}
+
+.scheduling-form select {
+    padding: 8px 4px;
+    display: block;
+    margin-top: 8px;
+}
+
+.scheduling-form button {
+    border: 1px solid rgba(0, 0, 0, 0.123);
+    border-radius: 8px;
+    background-color: rgb(172, 223, 121);
+    padding: 24px;
+    margin-top: 20px;
+    font-size: 16px;
+    transition: background-color 0.7s ease;
+}
+
+.scheduling-form button:hover {
+    cursor: pointer;
+    background-color: rgb(112, 170, 54);
+} */

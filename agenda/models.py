@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from datetime import datetime
 
 # Create your models here.
 # first_name (string), last_name (string), id (primary key)
@@ -33,10 +34,12 @@ class Reserva(models.Model):
         ('dia_inteiro', 'Dia Inteiro')
     ]
 
-    carro = models.ForeignKey(Carro, on_delete=models.CASCADE, default="")
+    # carro = models.ForeignKey(Carro, on_delete=models.CASCADE, default="")
     solicitante = models.CharField(max_length=100)
-    data = models.DateField()
+    dataSaida = models.DateField(blank=False, default=datetime.now)
+    dataEntrega = models.DateField()
     periodo = models.CharField(max_length=20, choices=PERIODO_CHOICES, default="")
+    aprovada = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.solicitante} - {self.carro} em {self.data}'
+        return f'{self.solicitante} - em {self.dataSaida}'

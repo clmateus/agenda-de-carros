@@ -1,20 +1,22 @@
 {% extends 'agenda/base.html' %}
-
+{% load static %}
 {% block content %}
-    <h2>Agendamentos</h2>
+    <h2 class='mt-3'>Agendamentos Aprovados</h2>
     {% if agendamentos %}
-        <table border="1" cellpadding="8">
-            <tr>
+        <table class="table">
+            <tr class="title">
                 <th>Solicitante</th>
                 <th>Carro</th>
-                <th>Data</th>
+                <th>Data de Saída</th>
+                <th>Data de Entrega</th>
                 <th>Período</th>
             </tr>
             {% for agendamento in agendamentos %}
             <tr>
                 <td>{{ agendamento.solicitante }}</td>
                 <td>{{ agendamento.carro }}</td>
-                <td>{{ agendamento.data }}</td>
+                <td>{{ agendamento.dataSaida }}</td>
+                <td>{{ agendamento.dataEntrega }}</td>
                 <td>{{ agendamento.get_periodo_display }}</td>
             </tr>
             {% endfor %}
