@@ -1,0 +1,29 @@
+ <nav class="navbar" style="background-color: #e3f2fd;" data-bs-theme="light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav me-auto">
+                     {% if user.is_authenticated %}
+            <span>Olá, {{ user.username }}!</span>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit">Sair</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Entrar</a>
+    {% endif %}
+                    <li class="nav-item">
+                        <a href="{% url 'home' %}" class="nav-link">Agendar</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a href="{% url 'listar_carros' %}" class="nav-link">Carros</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a href="{% url 'listar_agendamentos' %}" class="nav-link">Agendamentos Aprovados</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>

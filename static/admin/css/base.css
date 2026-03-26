@@ -26,7 +26,7 @@ html[data-theme="light"],
     --breadcrumbs-bg: #264b5d;
 
     --link-fg: #417893;
-    --link-hover-color: #036;
+    --link-hover-color: rgb(245, 245, 245);
     --link-selected-fg: var(--secondary);
 
     --hairline-color: #e8e8e8;
