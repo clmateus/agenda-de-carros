@@ -1,11 +1,16 @@
 from django.db import models
 from django.utils import timezone
 from datetime import datetime
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 # first_name (string), last_name (string), id (primary key)
 # email (email), setor (string), modelo (string), marca (string)
 # descrição (text)
+
+def validar_data_futura(value):
+    if value < timezone.now().date():
+        raise ValidationError('A data não pode ser anterior a hoje.')
 
 class Contact(models.Model):
     first_name = models.CharField(max_length=50)
@@ -36,8 +41,9 @@ class Reserva(models.Model):
 
     # carro = models.ForeignKey(Carro, on_delete=models.CASCADE, default="")
     solicitante = models.CharField(max_length=100)
-    dataSaida = models.DateField(blank=False, default=datetime.now)
-    dataEntrega = models.DateField()
+    dataSaida = models.DateField(blank=False, default=datetime.now, validators=[validar_data_futura])
+    dataEntrega = models.DateField(validators=[validar_data_futura])
+    horarioSolicitacao = models.DateTimeField(auto_now=True)
     periodo = models.CharField(max_length=20, choices=PERIODO_CHOICES, default="")
     aprovada = models.BooleanField(default=False)
 

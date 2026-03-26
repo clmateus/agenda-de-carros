@@ -1,19 +1,17 @@
- <nav class="navbar" style="background-color: #e3f2fd;" data-bs-theme="light">
+ {% load static authenticate_user %}
+ <nav class="navbar navbar-expand-md navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsCollapse" aria-controls="navbarsCollapse" aria-expanded="false" aria-label="Toggle navigation"> 
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="menuPrincipal">
-                <ul class="navbar-nav me-auto">
-                     {% if user.is_authenticated %}
-            <span>Olá, {{ user.username }}!</span>
-            <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button class="btn btn-danger" type="submit">Sair</button>
-            </form>
-        {% else %}
-            <a href="{% url 'login' %}">Entrar</a>
-    {% endif %}
+                <ul class="navbar-nav mb-2 mb-md-0">
+
+                    {% if user.is_authenticated %}
+                    {% else %}
+                        <a href="{% url 'login' %}">Entrar</a>
+                    {% endif %}
+
                     <li class="nav-item">
                         <a href="{% url 'home' %}" class="nav-link">Agendar</a>
                     </li>
@@ -23,7 +21,22 @@
                     <li class="nav-item">
                         <a href="{% url 'listar_agendamentos' %}" class="nav-link">Agendamentos Aprovados</a>
                     </li>
-                </ul>
-            </div>
+                    {% if user|has_group:'Gestores' %}
+                    <li class="nav-item">
+                        <a href="{% url 'solicitacoes' %}" class="nav-link">Aprovar Solicitações</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                    <span style="display: inline-block; margin-top: 8px; font-weight: bold; color: #DCDCDC "> | Olá, {{ user.username }}!</span>
+                    </li>
+                    </ul>
+                </div>
+                    <div class='justify-content-end'>
+                    <form  action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-danger" type="submit">Sair</button>
+                    </form>
+                    </div>
         </div>
     </nav>
+    
