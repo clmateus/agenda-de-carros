@@ -13,17 +13,17 @@
                     {% endif %}
 
                     <li class="nav-item">
-                        <a href="{% url 'agendamento' %}" class="nav-link">| Agendar |</a>
+                        <a href="{% url 'agendamento' %}" class="nav-link"> Agendar</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'listar_agendamentos' %}" class="nav-link">| Agendamentos Aprovados | </a>
+                        <a href="{% url 'listar_agendamentos' %}" class="nav-link">Agendamentos Aprovados</a>
                     </li>
                     {% if user|has_group:'Gestores' %}
                     <li class="nav-item">
-                        <a href="{% url 'solicitacoes' %}" class="nav-link">| Aprovar Solicitações |</a>
+                        <a href="{% url 'solicitacoes' %}" class="nav-link">Aprovar Solicitações</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'veiculos' %}" class="nav-link">| Veículos |</a>
+                        <a href="{% url 'veiculos' %}" class="nav-link">Veículos</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
