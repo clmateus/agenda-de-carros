@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import random
 
 def enviar_email_teste(remetente, mensagem):
     send_mail(
@@ -28,7 +29,7 @@ def agendamento(request):
             agendamento.save()
 
             # ✅ Envia e-mail de confirmação para o usuário logado
-            enviar_email_teste(request.user.email)
+            # enviar_email_teste(request.user.email)
 
             return redirect('agendamento')
     else:
@@ -39,7 +40,6 @@ def agendamento(request):
 
 @login_required
 def listar_agendamentos(request):
-    # agendamentos = Reserva.objects.all().order_by('data')
     agendamentos = Reserva.objects.filter(aprovada = True).order_by('dataSaida')
     return render(request, 'agenda/listar_agendamentos.html', {'agendamentos': agendamentos})
 
@@ -52,9 +52,18 @@ def responder_solicitacao(request, id, acao):
     reserva = get_object_or_404(Reserva, id=id)
 
     if acao == 'aprovar':
+        carros_disponiveis = Veiculo.objects.filter(status = True)
+        carros_livre_de_rodizio = [carro for carro in carros_disponiveis if carro.checa_rodizio(reserva.dataSaida)]
+
+        if not carros_livre_de_rodizio:
+            messages.error(request, f'Não há carros disponíveis que respeitem o rodízio na data de {reserva.dataSaida.strftime("%d/%m/%Y")}!')
+            return redirect('solicitacoes')
+    
+        carro_aleatorio = random.choice(carros_livre_de_rodizio)
+        reserva.veiculo = carro_aleatorio
         reserva.aprovada = True
         reserva.save()
-        enviar_email_teste(request.user.email) 
+        # enviar_email_teste(request.user.email) 
         messages.success(request, 'Aprovado')
     elif acao == 'negar':
         reserva.delete()

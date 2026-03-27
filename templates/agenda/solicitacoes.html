@@ -3,6 +3,17 @@
 {% block content %}
 
 <div class="container">
+    <div class="container mt-3">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    </div>
     {% if solicitacoes %}
     <h2 class="mt-4 text-center">Solicitações aguardando aprovação</h2>
      <table class="table table-striped">

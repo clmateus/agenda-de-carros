@@ -29,6 +29,31 @@ class Veiculo(models.Model):
     def __str__(self):
         return f'{self.marca} {self.modelo} - {self.placa}'
     
+    def checa_rodizio(self, data_checar):
+        # Se não for passada uma data, não é possível checar. Retorna True.
+        if not data_checar:
+            return True
+
+        final_placa = self.placa[-1]
+        # Pega o dia da semana (0=Segunda, 1=Terça, ..., 6=Domingo)
+        dia_da_semana = data_checar.weekday()
+
+        # Rodízio não se aplica em fins de semana
+        if dia_da_semana > 4: # 5=Sábado, 6=Domingo
+            return True
+
+        rodizio = {
+            0: ['1', '2'], # Segunda-feira
+            1: ['3', '4'], # Terça-feira
+            2: ['5', '6'], # Quarta-feira
+            3: ['7', '8'], # Quinta-feira
+            4: ['9', '0'], # Sexta-feira
+        } 
+
+        placas_proibidas = rodizio.get(dia_da_semana, [])
+        
+        return final_placa not in placas_proibidas
+    
 class Reserva(models.Model):
     PERIODO_CHOICES = [
         ('manha', 'Manhã'),
@@ -42,6 +67,14 @@ class Reserva(models.Model):
     horarioSolicitacao = models.DateTimeField(auto_now=True)
     periodo = models.CharField(max_length=20, choices=PERIODO_CHOICES, default="")
     aprovada = models.BooleanField(default=False)
+
+    veiculo = models.ForeignKey('Veiculo', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Veículo')
+
+    status_escolha = (
+        'P', 'Pendente',
+        'A', 'Aprovado',
+        'R', 'Recusado'
+    )
 
     def __str__(self):
         return f'{self.solicitante} - em {self.dataSaida}'

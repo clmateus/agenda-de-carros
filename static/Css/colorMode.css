@@ -6,11 +6,11 @@
     --border-color: #dddddd;
 
     /* Tabela - Light */
-    --table-bg: #ffffff;
+    --table-bg: #F8F8FF;
     --table-header-bg: #f0f0f0;
     --table-header-text: #333333;
     --table-row-bg: #F8F8FF;
-    --table-row-alt-bg: #ffffff;
+    --table-row-alt-bg: #F8F8FF;
     --table-row-text: #333333;
     --table-border: #dddddd;
 
@@ -19,7 +19,7 @@
     --input-text: #333333;
     --input-border: #cccccc;
     --input-disabled-bg: #e9ecef;
-    --form-card-bg: #F8F8FF;
+    --form-card-bg: #ffffff;
     --form-card-border: #dddddd;
     --label-text: #333333;
 }
@@ -139,4 +139,74 @@ table tbody tr:nth-child(even) td {
 table tbody tr:hover td {
     filter: brightness(1.1);
     transition: filter 0.2s;
+}
+
+/* Forçar a tabela do Bootstrap a aceitar suas variáveis */
+[data-theme='dark'] .table {
+    --bs-table-bg: var(--table-row-bg) !important;
+    --bs-table-color: var(--table-row-text) !important;
+    --bs-table-border-color: var(--table-border) !important;
+    color: var(--table-row-text) !important;
+}
+
+/* Ajuste para os Cards da página de veículos */
+[data-theme='dark'] .card {
+    background-color: #363636 !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme='dark'] .card-body {
+    color: var(--text-color) !important;
+}
+/* ===== MODAIS RESPONSIVOS AO TEMA ===== */
+
+/* Quando o tema for dark, altera o corpo do modal */
+[data-theme='dark'] .modal-content {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Ajusta as linhas divisórias internas do modal */
+[data-theme='dark'] .modal-header,
+[data-theme='dark'] .modal-footer {
+    border-color: var(--border-color) !important;
+}
+
+/* Ajusta o botão de fechar (X) para ficar visível no fundo escuro */
+[data-theme='dark'] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Garante que os formulários dentro do modal fiquem legíveis */
+[data-theme='dark'] .modal-body .form-control,
+[data-theme='dark'] .modal-body .form-select {
+    background-color: var(--input-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+/* Garante que o modal acompanhe o tema dark */
+[data-theme='dark'] .modal-content {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+[data-theme='dark'] .modal-header, 
+[data-theme='dark'] .modal-footer {
+    border-color: var(--border-color) !important;
+}
+
+/* Deixa o 'X' de fechar branco no modo dark */
+[data-theme='dark'] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Ajusta os inputs dentro do modal */
+[data-theme='dark'] .modal-body .form-control,
+[data-theme='dark'] .modal-body .form-select {
+    background-color: #2b2b45 !important; /* Cor de fundo para contraste nos campos */
+    color: #ffffff !important;
+    border-color: var(--border-color) !important;
 }
