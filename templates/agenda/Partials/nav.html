@@ -6,12 +6,10 @@
             </button>
             <div class="collapse navbar-collapse" id="menuPrincipal">
                 <ul class="navbar-nav mb-2 mb-md-0">
-
                     {% if user.is_authenticated %}
                     {% else %}
                         <a href="{% url 'login' %}">Entrar</a>
                     {% endif %}
-
                     <li class="nav-item">
                         <a href="{% url 'agendamento' %}" class="nav-link"> Agendar</a>
                     </li>
@@ -31,13 +29,13 @@
                     </li>
                     </ul>
                 </div>
-                    <div class='justify-content-end'>
+                <div class='justify-content-end'>
                         <button class="btn btn-secondary rounded-pill px-3" id="theme-toggle" onclick="toggleTheme()">🌑 Dark Mode</button>
                     <form  action="{% url 'logout' %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button class="btn btn-danger" type="submit">Sair</button>
                     </form>
-                    </div>
+                </div>
         </div>
     </nav>
     
