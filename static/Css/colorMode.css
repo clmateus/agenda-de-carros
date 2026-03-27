@@ -22,6 +22,7 @@
     --form-card-bg: #ffffff;
     --form-card-border: #dddddd;
     --label-text: #333333;
+    
 }
 
 /*Dark Mode*/
@@ -206,7 +207,7 @@ table tbody tr:hover td {
 /* Ajusta os inputs dentro do modal */
 [data-theme='dark'] .modal-body .form-control,
 [data-theme='dark'] .modal-body .form-select {
-    background-color: #2b2b45 !important; /* Cor de fundo para contraste nos campos */
+    background-color: #363636 !important; /* Cor de fundo para contraste nos campos */
     color: #ffffff !important;
     border-color: var(--border-color) !important;
 }

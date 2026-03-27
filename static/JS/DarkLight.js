@@ -11,7 +11,7 @@ function toggleTheme() {
             btn.textContent = '🌑 Dark Mode';
             // No site LIGHT, o botão deve ser DARK (contraste)
             btn.classList.remove('btn-light');
-            btn.classList.add('btn-$gray-700');
+            btn.classList.add('btn-secondary');
         }
     } else {
         // --- SAINDO DO LIGHT / ENTRANDO NO DARK ---

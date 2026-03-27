@@ -58,7 +58,14 @@ def responder_solicitacao(request, id, acao):
         if not carros_livre_de_rodizio:
             messages.error(request, f'Não há carros disponíveis que respeitem o rodízio na data de {reserva.dataSaida.strftime("%d/%m/%Y")}!')
             return redirect('solicitacoes')
-    
+
+        reservas_conflitantes = Reserva.objects.filter(aprovada = True, dataSaida__lt = reserva.dataEntrega, dataEntrega__gt = reserva.dataSaida).values_list('veiculo_id', flat=True)
+        carros_realmente_disponiveis = [carro for carro in carros_livre_de_rodizio if carro.id not in reservas_conflitantes]
+
+        if not carros_realmente_disponiveis:
+            messages.error(request, f'Não há carros disponívels para o período de {reserva.dataSaida.strftime("%d/%m/%Y %H:%M")} a {reserva.dataEntrega.strftime("%d/%m/%Y %H:%M")}')
+            return redirect('solicitacoes')
+        
         carro_aleatorio = random.choice(carros_livre_de_rodizio)
         reserva.veiculo = carro_aleatorio
         reserva.aprovada = True

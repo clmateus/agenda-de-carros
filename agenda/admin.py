@@ -8,7 +8,7 @@ class ListandoVeiculos(admin.ModelAdmin):
     list_filter = ("modelo",)
 
 class ListandoReservas(admin.ModelAdmin):
-    list_display = ("id", "solicitante", "horarioSolicitacao", "dataSaida", "dataEntrega", "periodo", "aprovada",)
+    list_display = ("id", "solicitante", "horarioSolicitacao", "dataSaida", "dataEntrega", "destino", "aprovada",)
     list_display_links = ("id", "solicitante", )
     list_editable = ("aprovada", )
     search_fields = ("solicitante",)

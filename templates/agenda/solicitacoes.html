@@ -22,7 +22,6 @@
                 <th>Solicitação criada em:</th>
                 <th>Data de Saída</th>
                 <th>Data de Entrega</th>
-                <th>Período</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -32,7 +31,6 @@
                 <td>{{ i.horarioSolicitacao }}</td>
                 <td>{{ i.dataSaida }}</td>
                 <td>{{ i.dataEntrega }}</td>
-                <td>{{ i.get_periodo_display }}</td>
                 <td>
                     <a href="{% url 'responder_solicitacao' i.id 'aprovar' %}" class="btn btn-success">aprovar</a>
                 </td>

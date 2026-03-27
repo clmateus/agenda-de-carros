@@ -12,7 +12,7 @@
             {% if veiculo.foto %}
                 <img src="{{ veiculo.foto.url }}" class="card-img-top" alt="{{ veiculo.modelo }}" style="height: 200px; object-fit: cover;">
             {% else %}
-                <img src="{% static 'img/404.jpg' %}" class="card-img-top" alt="Sem foto" style="height: 200px; object-fit: cover;">
+                <img src="{% static 'img/image_not_image.png' %}" class="card-img-top" alt="Sem foto" style="height: 200px; object-fit: cover;">
             {% endif %}
             
             <div class="card-body">
@@ -57,7 +57,7 @@
                                 <select name="tipo" class="form-control" required>
                                     <option value="carro" {% if veiculo.tipo == 'carro' %}selected{% endif %}>Carro</option>
                                     <option value="moto" {% if veiculo.tipo == 'moto' %}selected{% endif %}>Moto</option>
-                                    <option value="moto" {% if veiculo.tipo == 'caminhonete' %}selected{% endif %}>Caminhonete</option>
+                                    <option value="caminhonete" {% if veiculo.tipo == 'caminhonete' %}selected{% endif %}>Caminhonete</option>
                                 </select>
                             </div>
                             <div class="mb-3 text-start">

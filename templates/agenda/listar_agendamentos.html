@@ -10,7 +10,7 @@
                 <th>Carro</th>
                 <th>Data de Saída</th>
                 <th>Data de Entrega</th>
-                <th>Período</th>
+                <th>Destino</th>
             </tr>
             {% for agendamento in agendamentos %}
             <tr>
@@ -18,7 +18,7 @@
                 <td>{{ agendamento.veiculo }}</td>
                 <td>{{ agendamento.dataSaida }}</td>
                 <td>{{ agendamento.dataEntrega }}</td>
-                <td>{{ agendamento.get_periodo_display }}</td>
+                <td>{{ agendamento.destino }}</td>
             </tr>
             {% endfor %}
         </table>
