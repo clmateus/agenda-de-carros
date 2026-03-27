@@ -1,0 +1,166 @@
+{% extends 'agenda/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid">
+        <h2 class='mt-3'>Gerenciar Veículos</h2>
+        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionar">Adicionar</button>
+        <h3 class="mt-3">Todos os veículos</h3>
+    <div class="row">
+    {% for veiculo in veiculos %}
+    <div class="col-md-3 mb-4">
+        <div class="card h-100"> {% if veiculo.foto %}
+                <img src="{{ veiculo.foto.url }}" class="card-img-top" alt="{{ veiculo.modelo }}" style="height: 200px; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'img/404.jpg' %}" class="card-img-top" alt="Sem foto" style="height: 200px; object-fit: cover;">
+            {% endif %}
+            
+            <div class="card-body">
+                <h5 class="card-title">{{ veiculo.marca }} {{ veiculo.modelo }}</h5>
+                <p class="card-text">{{ veiculo.placa }}</p>
+                <div class="d-flex justify-content-between mt-auto"> 
+                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditar{{ veiculo.id }}">
+                        Editar
+                    </button>
+                    <a href="{% url 'remover_veiculo' veiculo.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja remover este veículo?')">
+                        Remover
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de Edição -->
+        <div class="modal fade" id="modalEditar{{ veiculo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ veiculo.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel{{ veiculo.id }}">Editar {{ veiculo.modelo }}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'editar_veiculo' veiculo.id %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="mb-3 text-start">
+                                <label class="form-label">Modelo</label>
+                                <input type="text" name="modelo" value="{{ veiculo.modelo }}" class="form-control" required>
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label class="form-label">Marca</label>
+                                <input type="text" name="marca" value="{{ veiculo.marca }}" class="form-control" required>
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label class="form-label">Placa</label>
+                                <input type="text" name="placa" value="{{ veiculo.placa }}" class="form-control" required>
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label class="form-label">Tipo do Veículo</label>
+                                <select name="tipo" class="form-control" required>
+                                    <option value="carro" {% if veiculo.tipo == 'carro' %}selected{% endif %}>Carro</option>
+                                    <option value="moto" {% if veiculo.tipo == 'moto' %}selected{% endif %}>Moto</option>
+                                    <option value="moto" {% if veiculo.tipo == 'caminhonete' %}selected{% endif %}>Caminhonete</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label class="form-label">Foto Atual:</label>
+                                    {% if veiculo.foto %}
+                                        <div id="container-foto-{{ veiculo.id }}" class="position-relative d-inline-block border p-2 rounded bg-light w-100">
+                                            <span class="small text-truncate d-block pe-5">
+                                                <strong>{{ veiculo.foto.name }}</strong>
+                                            </span>
+
+                                            <input type="checkbox" name="foto-clear" id="check-remove-{{ veiculo.id }}" class="d-none">
+
+                                            <button type="button" 
+                                                    class="btn btn-danger btn-sm position-absolute top-50 end-0 translate-middle-y me-2"
+                                                    onclick="marcarRemocao('{{ veiculo.id }}')"
+                                                    title="Remover imagem">
+                                                &times;
+                                            </button>
+                                        </div>
+                                        <div id="aviso-remocao-{{ veiculo.id }}" class="text-danger small d-none mt-1">
+                                            * A imagem será removida ao confirmar.
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted small">Nenhuma foto submetida.</p>
+                                    {% endif %}
+                                <input type="file" name="foto" class="form-control">
+                            </div>
+
+                            <div class="modal-footer px-0 pb-0">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-warning">Confirmar Edição</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <div class="col-12">
+            <p class="alert alert-info">Nenhum veículo cadastrado.</p>
+        </div>
+    {% endfor %}
+</div>
+    </div>
+    
+    <!-- Modal de Inserção -->
+    <div class="modal fade" id="modalAdicionar" tabindex="-1" aria-labelledby="modalAdicionar" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar veículo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="form-control border-none" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Adicionar</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Remoção -->
+    <div class="modal fade" id="modalRemover" tabindex="-1" aria-labelledby="modalRemover" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Remover veículo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger">Remover</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+<script>
+function marcarRemocao(veiculoId) {
+    const checkbox = document.getElementById('check-remove-' + veiculoId);
+    const container = document.getElementById('container-foto-' + veiculoId);
+    const aviso = document.getElementById('aviso-remocao-' + veiculoId);
+
+    checkbox.checked = !checkbox.checked;
+
+    if (checkbox.checked) {
+        container.style.opacity = '0.4';
+        container.style.textDecoration = 'line-through';
+        aviso.classList.remove('d-none');
+    } else {
+        container.style.opacity = '1';
+        container.style.textDecoration = 'none';
+        aviso.classList.add('d-none');
+    }
+}
+</script>
+{% endblock %}

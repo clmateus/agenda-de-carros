@@ -11,23 +11,20 @@ from django.core.exceptions import ValidationError
 def validar_data_futura(value):
     if value < timezone.now().date():
         raise ValidationError('A data não pode ser anterior a hoje.')
-
-class Contact(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    setor = models.CharField(max_length=50)
-    email= models.EmailField(max_length=255)
-    created_date = models.DateTimeField(default=timezone.now)
-    description = models.TextField(max_length=300, blank=True)
-
-    def __str__(self):
-        return f'Nome: {self.first_name} {self.last_name} | Setor: {self.setor} | E-mail: {self.email}'
     
-class Carro(models.Model):
-    marca = models.CharField(max_length=20, null=True, blank=True, default=None)
-    modelo = models.CharField(max_length=20, null=True, blank=True)
-    placa = models.CharField(max_length=7, null=True, blank=True, unique=True)
-    observacao = models.TextField(max_length=200)
+class Veiculo(models.Model):
+    TIPO_VEICULO_CHOICES = [
+        ('carro', 'Carro'),
+        ('moto', 'Moto'),
+        ('caminhonete', 'Caminhonete')
+    ]
+
+    marca = models.CharField(max_length=20)
+    modelo = models.CharField(max_length=20)
+    placa = models.CharField(max_length=7, unique=True)
+    tipo = models.CharField(choices=TIPO_VEICULO_CHOICES, default='')
+    status = models.BooleanField(default=True)
+    foto = models.ImageField(upload_to='veiculos/%Y/%m/%d', blank=True, null=True)
 
     def __str__(self):
         return f'{self.marca} {self.modelo} - {self.placa}'
@@ -39,7 +36,6 @@ class Reserva(models.Model):
         ('dia_inteiro', 'Dia Inteiro')
     ]
 
-    # carro = models.ForeignKey(Carro, on_delete=models.CASCADE, default="")
     solicitante = models.CharField(max_length=100)
     dataSaida = models.DateField(blank=False, default=datetime.now, validators=[validar_data_futura])
     dataEntrega = models.DateField(validators=[validar_data_futura])

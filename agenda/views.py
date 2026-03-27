@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import AgendamentoForm
-from .models import Carro, Reserva
+from .forms import AgendamentoForm, VeiculoForm
+from .models import Veiculo, Reserva
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render, redirect
@@ -8,10 +8,10 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-def enviar_email_teste(remetente):
+def enviar_email_teste(remetente, mensagem):
     send_mail(
         subject='Teste de Email',
-        message='Este é um teste usando o console do Django.',
+        message='Parabéns, sua reserva foi confirmada!',
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[remetente],
         fail_silently=False,
@@ -19,33 +19,23 @@ def enviar_email_teste(remetente):
     return HttpResponse("Email enviado (no console)")
 
 @login_required
-def home(request):
+def agendamento(request):
     if request.method == 'POST':
         form = AgendamentoForm(request.POST)
         if form.is_valid():
-            # 1. Criar o objeto sem salvar no banco
             agendamento = form.save(commit=False)
-            
-            # 2. Forçar o campo 'solicitante' a ser o usuário logado
             agendamento.solicitante = request.user.get_full_name() or request.user.username
-            
-            # 3. Salva o banco de dados
             agendamento.save()
-            
-            return redirect('home')
+
+            # ✅ Envia e-mail de confirmação para o usuário logado
+            enviar_email_teste(request.user.email)
+
+            return redirect('agendamento')
     else:
-        # 4. Guarda o nome de quem está logado
         nome_logado = request.user.get_full_name() or request.user.username
-        
-        # 5. Criar o formulário já com o nome preenchido no campo 'solicitante'
         form = AgendamentoForm(initial={'solicitante': nome_logado})
 
-    return render(request, 'agenda/home.html', {'form': form})
-
-
-def listar_carros(request):
-    carros = Carro.objects.all()
-    return render(request, 'agenda/listar_carros.html', {'carros': carros})
+    return render(request, 'agenda/agendamento.html', {'form': form})
 
 @login_required
 def listar_agendamentos(request):
@@ -64,9 +54,51 @@ def responder_solicitacao(request, id, acao):
     if acao == 'aprovar':
         reserva.aprovada = True
         reserva.save()
+        enviar_email_teste(request.user.email) 
         messages.success(request, 'Aprovado')
     elif acao == 'negar':
         reserva.delete()
         messages.warning(request, 'Negado')
 
     return redirect('solicitacoes')
+
+@login_required
+def veiculos(request):
+    veiculos = Veiculo.objects.filter(status = True)
+    if request.method == 'POST':
+        form = VeiculoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('veiculos')
+    else:
+        form = VeiculoForm()
+
+    return render(request, 'agenda/veiculos.html', {'veiculos': veiculos, 'form': form})
+
+def remover_veiculo(request, pk):
+    veiculo = get_object_or_404(Veiculo, pk=pk)
+    veiculo.delete()
+    return redirect('veiculos')
+
+def editar_veiculo(request, pk):
+    veiculo = get_object_or_404(Veiculo, pk=pk)
+
+    if request.method == 'POST':
+        # PRIMEIRO - Checa se o usuário quer remover a foto
+        if 'foto-clear' in request.POST:
+            if veiculo.foto:
+                veiculo.foto.delete(save=False)
+                veiculo.foto = None
+
+        # SEGUNDO - Tenta salvar as outras alterações
+        form = VeiculoForm(request.POST, request.FILES, instance=veiculo)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Veículo atualizado com sucesso!')
+            return redirect('veiculos')
+        else:
+            messages.error(request, 'Erro ao atualizar o veículo. Verifique os dados informados.')
+    else:
+        form = VeiculoForm(instance=veiculo)
+    
+    return render(request, 'agenda/editar_veiculo.html', {'form': form, 'veiculo': veiculo})

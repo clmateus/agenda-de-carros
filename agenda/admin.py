@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Carro, Reserva
+from .models import Veiculo, Reserva
 
-class ListandoCarros(admin.ModelAdmin):
-    list_display = ("id", "modelo", "marca", "placa")
+class ListandoVeiculos(admin.ModelAdmin):
+    list_display = ("id", "modelo", "marca", "placa", "tipo", "status")
     list_display_links = ("id", "modelo")
     search_fields = ("modelo",)
     list_filter = ("modelo",)
@@ -13,5 +13,5 @@ class ListandoReservas(admin.ModelAdmin):
     list_editable = ("aprovada", )
     search_fields = ("solicitante",)
 
-admin.site.register(Carro, ListandoCarros)
+admin.site.register(Veiculo, ListandoVeiculos)
 admin.site.register(Reserva, ListandoReservas)

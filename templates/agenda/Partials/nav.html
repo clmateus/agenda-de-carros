@@ -13,25 +13,26 @@
                     {% endif %}
 
                     <li class="nav-item">
-                        <a href="{% url 'home' %}" class="nav-link">Agendar</a>
+                        <a href="{% url 'agendamento' %}" class="nav-link">| Agendar |</a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a href="{% url 'listar_carros' %}" class="nav-link">Carros</a>
-                    </li> -->
                     <li class="nav-item">
-                        <a href="{% url 'listar_agendamentos' %}" class="nav-link">Agendamentos Aprovados</a>
+                        <a href="{% url 'listar_agendamentos' %}" class="nav-link">| Agendamentos Aprovados | </a>
                     </li>
                     {% if user|has_group:'Gestores' %}
                     <li class="nav-item">
-                        <a href="{% url 'solicitacoes' %}" class="nav-link">Aprovar Solicitações</a>
+                        <a href="{% url 'solicitacoes' %}" class="nav-link">| Aprovar Solicitações |</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'veiculos' %}" class="nav-link">| Veículos |</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                    <span style="display: inline-block; margin-top: 8px; font-weight: bold; color: #DCDCDC "> | Olá, {{ user.username }}!</span>
+                    <span style="display: inline-block; margin-top: 8px; font-weight: bold; color: #DCDCDC ">Olá, {{ user.first_name }} {{ user.last_name }}!</span>
                     </li>
                     </ul>
                 </div>
                     <div class='justify-content-end'>
+                        <button class="btn btn-light rounded-pill px-3" id="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
                     <form  action="{% url 'logout' %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button class="btn btn-danger" type="submit">Sair</button>

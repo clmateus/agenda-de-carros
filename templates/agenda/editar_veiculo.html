@@ -1,0 +1,131 @@
+{% extends 'agenda/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Editar Veículo</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <form action="{% url 'editar_veiculo' veiculo.id %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.modelo.id_for_label }}" class="form-label">{{ form.modelo.label }}</label>
+                            {{ form.modelo }}
+                            {% if form.modelo.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.modelo.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.marca.id_for_label }}" class="form-label">{{ form.marca.label }}</label>
+                            {{ form.marca }}
+                            {% if form.marca.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.marca.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.placa.id_for_label }}" class="form-label">{{ form.placa.label }}</label>
+                            {{ form.placa }}
+                            {% if form.placa.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.placa.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.tipo.id_for_label }}" class="form-label">{{ form.tipo.label }}</label>
+                            {{ form.tipo }}
+                            {% if form.tipo.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.tipo.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Foto Atual:</label>
+                            {% if veiculo.foto %}
+                                <div id="container-foto" class="position-relative d-inline-block border p-2 rounded bg-light w-100">
+                                    <span class="small text-truncate d-block pe-5">
+                                        <strong>{{ veiculo.foto.name }}</strong>
+                                    </span>
+                                    <input type="checkbox" name="foto-clear" id="check-remove" class="d-none">
+                                    <button type="button" 
+                                            class="btn btn-danger btn-sm position-absolute top-50 end-0 translate-middle-y me-2"
+                                            onclick="marcarRemocao()"
+                                            title="Remover imagem">
+                                        &times;
+                                    </button>
+                                </div>
+                                <div id="aviso-remocao" class="text-danger small d-none mt-1">
+                                    * A imagem será removida ao confirmar.
+                                </div>
+                            {% else %}
+                                <p class="text-muted small">Nenhuma foto submetida.</p>
+                            {% endif %}
+                            <label for="{{ form.foto.id_for_label }}" class="form-label mt-2">{{ form.foto.label }}</label>
+                            {{ form.foto }}
+                            {% if form.foto.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.foto.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'veiculos' %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-warning">Confirmar Edição</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function marcarRemocao() {
+    const checkbox = document.getElementById('check-remove');
+    const container = document.getElementById('container-foto');
+    const aviso = document.getElementById('aviso-remocao');
+
+    checkbox.checked = !checkbox.checked;
+
+    if (checkbox.checked) {
+        container.style.opacity = '0.4';
+        container.style.textDecoration = 'line-through';
+        aviso.classList.remove('d-none');
+    } else {
+        container.style.opacity = '1';
+        container.style.textDecoration = 'none';
+        aviso.classList.add('d-none');
+    }
+}
+</script>
+{% endblock %}
